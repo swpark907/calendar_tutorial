@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 const Calendar = styled.div`
   width: 100%;
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
 `;
 
@@ -13,7 +14,9 @@ const Header = styled.div`
 `;
 
 const DateForm = styled.div`
-  width: calc(100% / 7);
+  width: calc(100% / 7.3);
+  height: 200px;
+  border: solid 1px grey;
   background-color: #fff;
 `;
 
