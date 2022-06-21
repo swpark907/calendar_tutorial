@@ -2,6 +2,10 @@ import "./App.css";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 
+const Button = styled.button`
+  padding: 0.3em 1em;
+`
+
 const Calendar = styled.div`
   width: 100%;
   display: flex;
@@ -16,7 +20,8 @@ const Header = styled.div`
 const DateForm = styled.div`
   width: calc(100% / 7.3);
   height: 200px;
-  border: solid 1px grey;
+  border-right: solid 1px grey;
+  border-top: solid 1px grey;
   background-color: #fff;
 `;
 
@@ -43,7 +48,9 @@ function App() {
 
   return (
     <div className="App">
+      <Button>이전</Button>
       <Header>{currentMonth + "월 " + currentDate + "일"}</Header>
+      <Button>다음</Button>
       <Calendar>
         {[...Array(LASTDATE)].map((date, index) => (
           <DateForm>{Number(index) + 1}</DateForm>
