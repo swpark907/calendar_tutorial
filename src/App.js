@@ -9,7 +9,7 @@ const Button = styled.button`
 const Calendar = styled.div`
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   flex-wrap: wrap;
 `;
 
@@ -39,6 +39,28 @@ function App() {
   const [currentMonth, setCurrentMonth] = useState(MONTH);
   const [currentDate, setCurrentDate] = useState(DATE);
 
+  const [dateList, setDateList] = useState([]);
+
+  const getCalendarLine = () => {
+    // 현재 달의 첫째날의 요일
+    const dayOfFirst = new Date(currentYear, currentMonth - 1).getDay();
+
+    let dateOfCount = 0;
+    dayOfFirst >= 4 ? (dateOfCount = 41) : (dateOfCount = 34);
+
+    const data = [];
+
+    for (let i = -dayOfFirst + 1; i <= dateOfCount - dayOfFirst + 1; i++) {
+      const day = new Date(currentYear, currentMonth - 1, i);
+      data.push(day);
+    }
+    setDateList(data);
+  };
+
+  useEffect(() => {
+    getCalendarLine();
+  }, [currentMonth]);
+
   useEffect(() => {
     console.log(LASTDATE);
     console.log(currentYear, currentMonth, currentDate);
@@ -49,11 +71,11 @@ function App() {
   return (
     <div className="App">
       <Button>이전</Button>
-      <Header>{currentMonth + "월 " + currentDate + "일"}</Header>
+      <Header>{currentMonth + "월 "}</Header>
       <Button>다음</Button>
       <Calendar>
-        {[...Array(LASTDATE)].map((date, index) => (
-          <DateForm>{Number(index) + 1}</DateForm>
+        {dateList.map((date, index) => (
+          <DateForm>{date.getDate()}</DateForm>
         ))}
       </Calendar>
     </div>
