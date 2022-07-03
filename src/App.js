@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 
 const Button = styled.button`
   padding: 0.3em 1em;
-`
+`;
 
 const Calendar = styled.div`
   width: 100%;
@@ -68,6 +68,22 @@ function App() {
     console.log(Week[DAYOFFIRST]);
   });
 
+  const onClick = (e) => {
+    console.log(e.currentTarget.dataset.year);
+  };
+  const formChanger = (date) => {
+    const year = date.getFullYear().toString();
+    const month =
+      date.getMonth() + 1 < 10
+        ? "0" + (date.getMonth() + 1).toString()
+        : (date.getMonth() + 1).toString();
+    const day =
+      date.getDate() < 10
+        ? "0" + date.getDate().toString()
+        : date.getDate().toString();
+    return year + month + day;
+  };
+
   return (
     <div className="App">
       <Button>이전</Button>
@@ -75,7 +91,15 @@ function App() {
       <Button>다음</Button>
       <Calendar>
         {dateList.map((date, index) => (
-          <DateForm>{date.getDate()}</DateForm>
+          <DateForm
+            data-year={date.getFullYear()}
+            data-month={date.getMonth()}
+            data-date={date.getDate()}
+            data-data={formChanger(date)}
+            onClick={onClick}
+          >
+            {date.getDate()}
+          </DateForm>
         ))}
       </Calendar>
     </div>
@@ -83,3 +107,4 @@ function App() {
 }
 
 export default App;
+//
