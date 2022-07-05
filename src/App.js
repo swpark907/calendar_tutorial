@@ -44,6 +44,7 @@ function App() {
   const getCalendarLine = () => {
     // 현재 달의 첫째날의 요일
     const dayOfFirst = new Date(currentYear, currentMonth - 1).getDay();
+    const dayOfLast = new Date(currentYear, currentMonth, -1).getDay();
 
     let dateOfCount = 0;
     dayOfFirst >= 4 ? (dateOfCount = 41) : (dateOfCount = 34);
@@ -84,14 +85,23 @@ function App() {
     return year + month + day;
   };
 
+  const goToNextMonth = () => {
+    setCurrentMonth(currentMonth + 1);
+  };
+
+  const goToPrevMonth = () => {
+    setCurrentMonth(currentMonth - 1);
+  };
+
   return (
     <div className="App">
-      <Button>이전</Button>
+      <Button onClick={goToPrevMonth}>이전</Button>
       <Header>{currentMonth + "월 "}</Header>
-      <Button>다음</Button>
+      <Button onClick={goToNextMonth}>다음</Button>
       <Calendar>
         {dateList.map((date, index) => (
           <DateForm
+            key={index}
             data-year={date.getFullYear()}
             data-month={date.getMonth()}
             data-date={date.getDate()}
