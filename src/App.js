@@ -1,6 +1,6 @@
 import "./App.css";
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const Button = styled.button`
   padding: 0.3em 1em;
@@ -63,15 +63,32 @@ function App() {
   }, [currentMonth]);
 
   useEffect(() => {
-    console.log(LASTDATE);
-    console.log(currentYear, currentMonth, currentDate);
-    // console.log(DAYOFFIRST)
-    console.log(Week[DAYOFFIRST]);
+    console.log(currentMonth)
   });
 
-  const onClick = (e) => {
-    console.log(e.currentTarget.dataset.year);
+  // const formChanger = (date) => {
+  //   const year = date.getFullYear().toString();
+  //   const month =
+  //     date.getMonth() + 1 < 10
+  //       ? "0" + (date.getMonth() + 1).toString()
+  //       : (date.getMonth() + 1).toString();
+  //   const day =
+  //     date.getDate() < 10
+  //       ? "0" + date.getDate().toString()
+  //       : date.getDate().toString();
+  //   return year + month + day;
+  // };
+
+  const goToNextMonth = () => {
+    setCurrentMonth(currentMonth + 1);
   };
+
+  const goToPrevMonth = () => {
+    setCurrentMonth(currentMonth - 1);
+  };
+
+  const dateRefs = useRef([]);
+
   const formChanger = (date) => {
     const year = date.getFullYear().toString();
     const month =
@@ -82,15 +99,30 @@ function App() {
       date.getDate() < 10
         ? "0" + date.getDate().toString()
         : date.getDate().toString();
-    return year + month + day;
+    return Number(year + month + day);
   };
 
-  const goToNextMonth = () => {
-    setCurrentMonth(currentMonth + 1);
-  };
+  const dateOnclick = (e) => {
+    const target = e.currentTarget;
 
-  const goToPrevMonth = () => {
-    setCurrentMonth(currentMonth - 1);
+    const dateData = target.dataset.date;
+    const year = Number(dateData.substr(0, 4));
+    const month = Number(dateData.substr(4, 2));
+    const date = Number(dateData.substr(6));
+    if (month !== currentMonth) {
+      setCurrentYear(Number(year));
+      setCurrentMonth(Number(month));
+      console.log(month)
+    }
+
+    dateRefs.current.map((el) => {
+      if (el.dataset.date === target.dataset.date) {
+        el.classList.add("selected");
+        // API로 받아온 그날의 data 넣기
+      } else {
+        el.classList.remove("selected");
+      }
+    });
   };
 
   return (
@@ -102,11 +134,12 @@ function App() {
         {dateList.map((date, index) => (
           <DateForm
             key={index}
-            data-year={date.getFullYear()}
-            data-month={date.getMonth()}
-            data-date={date.getDate()}
-            data-data={formChanger(date)}
-            onClick={onClick}
+            ref={(el) => dateRefs.current.push(el)}
+            // data-year={date.getFullYear()}
+            // data-month={date.getMonth()}
+            // data-date={date.getDate()}
+            data-date={formChanger(date)}
+            onClick={dateOnclick}
           >
             {date.getDate()}
           </DateForm>
