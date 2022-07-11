@@ -25,6 +25,16 @@ const DateForm = styled.div`
   background-color: #fff;
 `;
 
+const WeekForm = styled.div`
+  width: calc(100% / 7.3);
+  height: 100px
+  border-top: solid 1px grey;
+  border-bottom: solid 1px grey;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+`;
+
 function App() {
   const NOW = new Date();
   const YEAR = NOW.getFullYear();
@@ -63,21 +73,8 @@ function App() {
   }, [currentMonth]);
 
   useEffect(() => {
-    console.log(currentMonth)
+    console.log(currentMonth);
   });
-
-  // const formChanger = (date) => {
-  //   const year = date.getFullYear().toString();
-  //   const month =
-  //     date.getMonth() + 1 < 10
-  //       ? "0" + (date.getMonth() + 1).toString()
-  //       : (date.getMonth() + 1).toString();
-  //   const day =
-  //     date.getDate() < 10
-  //       ? "0" + date.getDate().toString()
-  //       : date.getDate().toString();
-  //   return year + month + day;
-  // };
 
   const goToNextMonth = () => {
     setCurrentMonth(currentMonth + 1);
@@ -112,13 +109,12 @@ function App() {
     if (month !== currentMonth) {
       setCurrentYear(Number(year));
       setCurrentMonth(Number(month));
-      console.log(month)
+      console.log(month);
     }
 
     dateRefs.current.map((el) => {
       if (el.dataset.date === target.dataset.date) {
         el.classList.add("selected");
-        // API로 받아온 그날의 data 넣기
       } else {
         el.classList.remove("selected");
       }
@@ -131,13 +127,15 @@ function App() {
       <Header>{currentMonth + "월 "}</Header>
       <Button onClick={goToNextMonth}>다음</Button>
       <Calendar>
+        {Week.map((week) => (
+          <WeekForm>
+            {week}
+          </WeekForm>
+        ))}
         {dateList.map((date, index) => (
           <DateForm
             key={index}
             ref={(el) => dateRefs.current.push(el)}
-            // data-year={date.getFullYear()}
-            // data-month={date.getMonth()}
-            // data-date={date.getDate()}
             data-date={formChanger(date)}
             onClick={dateOnclick}
           >
